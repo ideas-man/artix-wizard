@@ -42,13 +42,17 @@ xbindkeys
 while true
 do
 	VOL="VOL:$(amixer get Master | tail -1 | sed 's/.*\[\([0-9]*%\)\].*/\1/')"
-	LOCALTIME="TIME:$(date +%Z\=%Y-%m-%dT%H:%M)"
+	LOCALTIME="TIME:$(date +%Y.%m.%d'/'%H:%M)"
 	IP="IP:$(for i in `ip r`; do echo $i; done | grep -A 1 src | tail -n1)" # can get confused if you use vmware
 	TEMP="TEMP:$(($(cat /sys/class/thermal/thermal_zone0/temp) / 1000))C"
-	BAT="BAT:$(acpi -b | grep -o '[[:digit:]]*%' | tr '\n' '|')"
-	xsetroot -name "$IP/$BAT/$VOL/$TEMP/$LOCALTIME"
+	BAT="BAT:$(acpi -b | grep -o '[[:digit:]]*%' | tr '\n' '/' | head -c -1)"
+	SLANG=$(xset -q | grep LED | awk '{print $10}' | sed -E 's/....(.).../\1/')
+	case $SLANG in
+		0) LANG="LANG:EN";;
+		1) LANG="LANG:RU";;
+	esac
+	xsetroot -name "$IP|$LANG|$BAT|$VOL|$TEMP|$LOCALTIME"
 
-	sleep 10s
+	sleep 5s
 done &
 exec dwm
-
