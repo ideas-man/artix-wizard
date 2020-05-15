@@ -58,6 +58,9 @@
 # mute
 "amixer set Master toggle"
   XF86AudioMute
+# printscreen
+"maim -s | xclip -selection clipboard -t image/png"
+  m:0x0 + c:107
 #"xterm -geom 50x20+20+20"
 #   Shift+Mod2+alt + s
 #
