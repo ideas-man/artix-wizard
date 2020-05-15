@@ -1,0 +1,22 @@
+# This is Git's per-user configuration file.
+[core]
+    editor = vim
+    excludesfile = ~/.gitignore_global
+    pager = less
+[diff]
+    tool = vimdiff
+[difftool]
+    prompt = false
+    trustExitCode = true
+[alias]
+    dif = difftool
+
+[merge]
+    tool = vimdiff
+[mergetool]
+    prompt = false
+    trustExitCode = true
+
+[user]
+    email = specimen.commits@protonmail.com
+    name = specimen-hub

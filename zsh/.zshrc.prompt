@@ -1,0 +1,411 @@
+_p_bold="%B"
+_p_stopbold="%b"
+
+_p_color ()
+{
+    echo "%F{$1}$([ -n "$2" ] && echo "%K{$2}" || true)"
+}
+
+_p_safe_color ()
+{
+    if [ $(tput colors) -gt 8 ]; then echo "$1"; else echo "$2"; fi
+}
+
+_p_color_white=$(_p_safe_color "$(_p_color 15)" "${_p_bold}$(_p_color 7)")%k
+
+_p_stdcolor=$(_p_safe_color "$(_p_color 244)" "$(_p_color 7)${_p_stopbold}")%k
+_p_cmdcolor=${_p_color_white}
+
+_p_dot="·"
+_p_dash="─"
+_p_2dash="═"
+_p_rightarrow="→"
+_p_top="┌"
+_p_mid0="│"
+_p_mid1="├"
+_p_mid2="╞"
+_p_bot="└"
+_p_mid_r="┐"
+_p_bot_r="┘"
+_p_diamond="◆"
+_p_uparrow="↑"
+_p_downarrow="↓"
+_p_updownarrow="↕"
+
+_p_ellipsis="${_p_dot}${_p_dot}${_p_dot}"
+
+###############################################################################
+
+_p_preexec ()
+{
+    _p_timer=${_p_timer:-$SECONDS}
+    _p_command_executed=true
+}
+add-zsh-hook preexec _p_preexec
+
+_p_prompt_init_f ()
+{
+    _p_exitcode="$?" # This needs to be first
+
+    if [ -n "$_p_command_executed" ]
+    then 
+        unset _p_command_executed
+
+        if [ -n "$_p_timer" ]
+        then
+            _p_timer_delta=$(($SECONDS - $_p_timer))
+            [ $_p_timer_delta -lt 0 ] && _p_timer_delta=0
+            unset _p_timer
+        fi
+    else 
+        unset _p_timer_delta
+        unset _p_exitcode
+    fi
+
+    _p_separator="$(printf "%0.s${_p_dot}" $(seq 1 $(($COLUMNS))))"
+}
+add-zsh-hook precmd _p_prompt_init_f
+
+###############################################################################
+
+_p_timeinfo_f ()
+{
+    _p_timeinfo_length=10
+    local TimeInfoColor=${_p_color_white}
+    _p_timeinfo="[${TimeInfoColor}%D{%T}${_p_stdcolor}]"
+}
+add-zsh-hook precmd _p_timeinfo_f
+
+_p_cmdtimeinfo_f ()
+{
+    local CmdTimeInfoColor=${_p_color_white}
+    if [ -n "$_p_timer_delta" ]
+    then 
+        _p_cmdtimeinfo_length=$((3 + ${#_p_timer_delta}))
+        _p_cmdtimeinfo="[${CmdTimeInfoColor}${_p_timer_delta}s${_p_stdcolor}]"
+    else 
+        _p_cmdtimeinfo_length=0
+        _p_cmdtimeinfo=""
+    fi
+}
+add-zsh-hook precmd _p_cmdtimeinfo_f
+
+_p_cmdstatusinfo_f ()
+{
+    local SuccessColor=$(_p_safe_color "$(_p_color 76)" "${_p_bold}$(_p_color 2)")
+    local FailureColor=$(_p_safe_color "$(_p_color 160)" "${_p_bold}$(_p_color 1)")
+    local NoCommandColor=${_p_stdcolor}
+    if [ -n "$_p_exitcode" ]
+    then
+        if [ "$_p_exitcode" -eq 0 ]
+        then 
+            _p_cmdstatusinfo_length=5
+            _p_cmdstatusinfo="${_p_dash}[${SuccessColor}ok${_p_stdcolor}]"
+        else 
+            _p_cmdstatusinfo_length=$((9 + ${#_p_exitcode}))
+            _p_cmdstatusinfo="${_p_dash}[${FailureColor}error ${_p_exitcode}${_p_stdcolor}]"
+        fi
+    else 
+        _p_cmdstatusinfo_length=6
+        _p_cmdstatusinfo="${_p_dash}(${NoCommandColor}nop${_p_stdcolor})"
+    fi
+}
+add-zsh-hook precmd _p_cmdstatusinfo_f
+
+_p_processinfo_f ()
+{
+    local bra="("
+    local ket=")"
+    local OutputStr="$(echo "$(pstree -ls $$)" | head -n1 | sed "
+        s/-.-/---/g; 
+        s/systemd//;
+        s/---login//;
+        s/---pstree//;
+        s/---head//;
+        s/---sh//g;
+        s/---dash//g;
+        s/---zsh//g;
+        s/---bash//g;
+        s/---startx//g;
+        s/---xinit//g;
+        s/---dwm//g;
+        s/---x-desktop\.sh//g;
+        s/---dropdown-termin//g;
+        s/^---//;
+        s/sshd---sshd/ssh/;
+        s/tmux: server/tmux/;
+        s/screen---screen/screen/;
+        s/y-desktop\.sh---screen---yaft/yaft/;
+        s@---@///@g; 
+    ")"
+
+    #s/---/${ket}${_p_rightarrow}${bra}/g; 
+
+    if [ -z "$OutputStr" ]
+    then unset _p_processinfo; return
+    fi
+
+    local PromptLength=$((1 + $_p_timeinfo_length + $_p_cmdtimeinfo_length + 
+                          $_p_cmdstatusinfo_length + 3))
+    local MaxOutputLength=$(($COLUMNS - $PromptLength))
+
+    local PNameColor=${_p_color_white}
+    local PrettifyingRegEx='s@///@'"${_p_stdcolor}$ket${_p_rightarrow}$bra$PNameColor"'@g'
+
+    if [ "${#OutputStr}" -le "$MaxOutputLength" ]
+    then
+        local OutputStr=$(echo "$OutputStr" | sed -E "$PrettifyingRegEx")
+        _p_processinfo=" ${bra}$PNameColor$OutputStr${_p_stdcolor}${ket}"
+    else
+        local OutputStr="$OutputStr///"
+        local MaxOutputLength=$(($MaxOutputLength - ${#_p_ellipsis}))
+        local SkipColor=$(_p_color 1)
+        local SkipRegEx='s@^([^/]*///)(.*)@\2@'
+
+        local OutputStrShorter=$(echo "$OutputStr" | sed -E "$SkipRegEx")
+        while [ "${#OutputStr}" -gt "$MaxOutputLength" ] && [ "${#OutputStrShorter}" -lt "${#OutputStr}" ]
+        do
+            local OutputStr="$OutputStrShorter"
+            local OutputStrShorter=$(echo "$OutputStr" | sed -E "$SkipRegEx")
+        done
+
+        if [ -n "$OutputStr" ]
+        then
+            local OutputStr="$SkipColor${_p_ellipsis}///${OutputStr:0:-3}"
+            local OutputStr=$(echo "$OutputStr" | sed -E "$PrettifyingRegEx")
+            _p_processinfo=" ${bra}$OutputStr${_p_stdcolor}$ket"
+        else
+            _p_processinfo=" ${bra}$SkipColor${_p_ellipsis}${_p_stdcolor}$ket"
+        fi
+    fi
+}
+add-zsh-hook precmd _p_processinfo_f
+
+###############################################################################
+
+_p_userhostinfo_f ()
+{
+    local USER=$(whoami)
+    local HOST=$(hostname)
+    _p_userhostinfo_length="$((4 + ${#USER} + ${#HOST}))"
+
+    local RootColor=$(_p_safe_color "$(_p_color 15 196)" "${_p_bold}$(_p_color 7 1)")
+    local UserColor=$(_p_safe_color "$(_p_color 40)" "${_p_bold}$(_p_color 2)")
+    local HostColor=$(_p_safe_color "$(_p_color 39)" "${_p_bold}$(_p_color 4)")
+
+    if [ "$(id -u)" -eq 0 ]
+    then
+        local _p_username="${RootColor}${USER}${_p_stdcolor}"
+    else
+        local username_line="$(grep "^$USER " $HOME/.zshrc.prompt.usernames 2> /dev/null)"
+        if [ "$(tput colors)" -ge 256 ] && [ -n "$username_line" ]
+        then
+            local _p_username="$(echo "$username_line" | cut -d' ' -f2)${_p_stdcolor}"
+        else
+            local _p_username="${UserColor}${USER}${_p_stdcolor}"
+        fi
+    fi
+    _p_userhostinfo="${_p_2dash}[${_p_username}@${HostColor}${HOST}${_p_stdcolor}]"
+}
+add-zsh-hook precmd _p_userhostinfo_f
+
+_p_gitinfo_f ()
+{
+    local LocationColor=$(_p_safe_color "$(_p_color 165)" "${_p_bold}$(_p_color 5)")
+
+    # Exit if not inside a Git repository
+    if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1
+    then
+        _p_gitinfo_length=4
+        _p_gitinfo="${_p_2dash}[${_p_color_white}${_p_dot}${_p_stdcolor}]"
+        return
+    fi
+
+    # Git branch/tag, or name-rev if on detached head
+    local GIT_LOCATION=${$(git symbolic-ref -q HEAD || git name-rev --name-only --no-undefined --always HEAD)#(refs/heads/|tags/)}
+    _p_gitinfo_length=$((3 + ${#GIT_LOCATION}))
+
+    local AheadColor=$_p_color_white
+    local BehindColor=$(_p_safe_color "$(_p_color 166)" "${_p_bold}$(_p_color 1)")
+
+    local MergingColor=$(_p_safe_color "$(_p_color 33)" "${_p_bold}$(_p_color 4)")
+    local UntrackedColor=$(_p_safe_color "$(_p_color 160)" "${_p_bold}$(_p_color 1)")
+    local ModifiedColor=$(_p_safe_color "$(_p_color 214)" "${_p_bold}$(_p_color 3)")
+    local StagedColor=$(_p_safe_color "$(_p_color 34)" "$(_p_color 2)")
+
+    local AHEAD="${AheadColor}${_p_uparrow}NUM${_p_stdcolor}"
+    local BEHIND="${BehindColor}${_p_downarrow}NUM${_p_stdcolor}"
+
+    local MERGING="${MergingColor}${_p_updownarrow}${_p_stdcolor}"
+    local UNTRACKED="${UntrackedColor}${_p_diamond}${_p_stdcolor}"
+    local MODIFIED="${ModifiedColor}${_p_diamond}${_p_stdcolor}"
+    local STAGED="${StagedColor}${_p_diamond}${_p_stdcolor}"
+
+    local -a DIVERGENCES
+    local -a FLAGS
+
+    local NUM_AHEAD="$(git log --oneline @{u}.. 2> /dev/null | wc -l | tr -d ' ')"
+    if [ "$NUM_AHEAD" -gt 0 ]
+    then 
+        local _p_gitinfo_div=true
+        _p_gitinfo_length=$(($_p_gitinfo_length + 1 + ${#NUM_AHEAD}))
+        DIVERGENCES+=( "${AHEAD//NUM/$NUM_AHEAD}" )
+    fi
+
+    local NUM_BEHIND="$(git log --oneline ..@{u} 2> /dev/null | wc -l | tr -d ' ')"
+    if [ "$NUM_BEHIND" -gt 0 ]
+    then 
+        local _p_gitinfo_div=true
+        _p_gitinfo_length=$(($_p_gitinfo_length + 1 + ${#NUM_BEHIND}))
+        DIVERGENCES+=( "${BEHIND//NUM/$NUM_BEHIND}" )
+    fi
+
+    [ -n "$_p_gitinfo_div" ] && _p_gitinfo_length=$(($_p_gitinfo_length + 2))
+
+    local GIT_DIR="$(git rev-parse --git-dir 2> /dev/null)"
+    if [ -n "$GIT_DIR" ] && [ -r "$GIT_DIR/MERGE_HEAD" ]
+    then 
+        local _p_gitinfo_flag=true
+        _p_gitinfo_length=$(($_p_gitinfo_length + 1))
+        FLAGS+=( "$MERGING" )
+    fi
+
+    if [ -n "$(git ls-files $(git rev-parse --show-toplevel) --other --exclude-standard 2> /dev/null)" ]
+    then 
+        local _p_gitinfo_flag=true
+        _p_gitinfo_length=$(($_p_gitinfo_length + 1))
+        FLAGS+=( "$UNTRACKED" )
+    fi
+
+    if ! git diff --quiet 2> /dev/null
+    then 
+        local _p_gitinfo_flag=true
+        _p_gitinfo_length=$(($_p_gitinfo_length + 1))
+        FLAGS+=( "$MODIFIED" )
+    fi
+
+    if ! git diff --cached --quiet 2> /dev/null
+    then 
+        local _p_gitinfo_flag=true
+        _p_gitinfo_length=$(($_p_gitinfo_length + 1))
+        FLAGS+=( "$STAGED" )
+    fi
+
+    [ -n "$_p_gitinfo_flag" ] && _p_gitinfo_length=$(($_p_gitinfo_length + 2))
+
+    local -a GIT_INFO
+    GIT_INFO+=( "${LocationColor}$GIT_LOCATION${_p_stdcolor}" )
+    [ "${#DIVERGENCES[@]}" -ne 0 ] && GIT_INFO+=( "${(j::)DIVERGENCES}" )
+    [ "${#FLAGS[@]}" -ne 0 ] && GIT_INFO+=( "${(j::)FLAGS}" )
+    _p_gitinfo="${_p_2dash}[${(j:][:)GIT_INFO}]"
+}
+add-zsh-hook precmd _p_gitinfo_f
+
+_p_pwdinfo_f ()
+{
+    local PromptLength=$((1 + $_p_userhostinfo_length + $_p_gitinfo_length + 1))
+    local MaxOutputLength=$(($COLUMNS - $PromptLength))
+
+    if [ "$(($_p_gitinfo_length * 2))" -ge "$MaxOutputLength" ]
+    then
+        local MaxOutputLength=$(($MaxOutputLength + $_p_gitinfo_length))
+        _p_gitinfo_length=0
+        unset _p_gitinfo
+    fi
+
+    local DirColor=${_p_color_white}
+    local SlashColor=${_p_stdcolor}
+    local DirColoringRegEx="s@/@$SlashColor/$DirColor@g"
+
+    local SkipColor=$(_p_color 1)
+    local SkipRegEx='s@/(.)([^/][^/]+)/@/\1~/@'
+    local SkipColoringRegEx="s@~/@$SkipColor~$SlashColor/@"
+    local SkipCounter=0
+
+    local DirPath="$PWD/"
+    local DirPathShorter=$(echo "$DirPath" | sed -E "$SkipRegEx")
+
+    while [ "${#DirPath}" -gt "$MaxOutputLength" ] && [ "${#DirPathShorter}" -lt "${#DirPath}" ]
+    do
+        local DirPath="$DirPathShorter"
+        local DirPathShorter=$(echo "$DirPath" | sed -E "$SkipRegEx")
+        local SkipCounter=$(($SkipCounter + 1))
+    done
+
+    for i in $(seq 1 $SkipCounter)
+    do local DirPath=$(echo "$DirPath" | sed -E "$SkipColoringRegEx")
+    done
+
+    local DirPath=${DirPath:0:-1}
+    local DirPath=$(echo "$DirPath" | sed -E "$DirColoringRegEx")
+
+    _p_pwdinfo="[$DirColor$DirPath${_p_stdcolor}]"
+}
+add-zsh-hook precmd _p_pwdinfo_f
+
+###############################################################################
+
+_p_cmdline_f ()
+{
+    local PromptCharacterColor=$(_p_safe_color "$(_p_color 250)" "$(_p_color 7)")
+    local PromptCharacter="${PromptCharacterColor} $([ "$(id -u)" -ne 0 ] && echo "$" || echo "#") ${_p_cmdcolor}"
+
+    PROMPT="${_p_stdcolor}${_p_bot}[$2$1${_p_stdcolor}]${PromptCharacter}"
+    local CSI=$'\e['
+    local len=$((8 + 2))
+    local FixPrevPromptPrefix="%{${CSI}A${_p_mid0}$(printf "%0.s " $(seq 1 $len)) ${_p_dot}${CSI}${len}D${CSI}3D${CSI}B%}"
+    PROMPT2="${_p_stdcolor}${FixPrevPromptPrefix}${_p_bot}[$2$1${_p_stdcolor}]${PromptCharacter}"
+}
+
+zle-keymap-select ()
+{
+    CommandModeIndicatorColor=$(_p_safe_color "$(_p_color 15 1)" "${_p_bold}$(_p_color 7 1)")
+    if [ "$KEYMAP" = "vicmd" ]
+    then _p_cmdline_f " NORMAL " "${CommandModeIndicatorColor}"
+    else _p_cmdline_f "        "
+    fi
+    zle reset-prompt
+}
+zle -N zle-keymap-select
+
+zle-line-init ()
+{
+    (( ${+terminfo[smkx]} )) && echoti smkx
+    _p_cmdline_f "        "
+    zle reset-prompt
+}
+zle -N zle-line-init
+
+zle-line-finish ()
+{
+    (( ${+terminfo[rmkx]} )) && echoti rmkx
+    if [ "$(($(echo -En "$BUFFER" | sed -E 's;(.*[^\\])(\\*)$;\2;' | wc -m) % 2))" -eq 0 ]
+    then _p_cmdline_f "%D{%T}" "${_p_color_white}"; fi
+    zle reset-prompt
+}
+zle -N zle-line-finish
+
+# Fix a bug when you C-c in CMD mode and you'd be prompted with CMD mode indicator, while in fact you would be in INS mode
+# Fixed by catching SIGINT (C-c), set vim_mode to INS and then repropagate the SIGINT, so if anything else depends on it, we will not break it
+TRAPINT ()
+{
+    _p_cmdline_f "        "
+    zle && { zle reset-prompt; zle -R; }
+    return $(( 128 + $1 ))
+} 
+
+###############################################################################
+
+_p_prompt ()
+{
+    print -P "${_p_stdcolor}"
+    print -P "${_p_stdcolor}${_p_separator}"
+    print -P "${_p_stdcolor}${_p_top}${_p_timeinfo}${_p_cmdtimeinfo}${_p_cmdstatusinfo}${_p_processinfo}"
+    print -P "${_p_stdcolor}${_p_mid2}${_p_userhostinfo}${_p_gitinfo}${_p_pwdinfo}"
+
+    _p_cmdline_f "        "
+}
+add-zsh-hook precmd _p_prompt
+
+# vim: set ft=zsh:
+
