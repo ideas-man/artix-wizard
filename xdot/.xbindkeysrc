@@ -41,22 +41,14 @@
 
 "xbindkeys_show" 
   control+shift + q
-
-# set directly keycode (here control + f with my keyboard)
-"xterm"
-  c:41 + m:0x4
-
-# specify a mouse button
-"xterm"
-  control + b:2
 # volume up
-"amixer set Master 5%+"
+"amixer set Master 5+"
   XF86AudioRaiseVolume
 # volume down
-"amixer set Master 5%-"
+"amixer set Master 5-"
   XF86AudioLowerVolume
 # mute
-"amixer set Master toggle"
+"pactl set-sink-mute 0 toggle"
   XF86AudioMute
 # printscreen
 "maim -s | xclip -selection clipboard -t image/png"
