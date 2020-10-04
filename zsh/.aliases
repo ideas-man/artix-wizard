@@ -12,7 +12,5 @@ alias egrep='egrep --color=auto '
 
 alias diff='diff --color=auto '
 
-alias less='/usr/share/vim/vim82/macros/less.sh '
-
 alias gh='cd ~'
 alias lf='lfcd '
