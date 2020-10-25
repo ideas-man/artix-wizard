@@ -398,12 +398,11 @@ TRAPINT ()
 
 _p_prompt ()
 {
-    print -P "${_p_stdcolor}"
-    print -P "${_p_stdcolor}${_p_separator}"
-    print -P "${_p_stdcolor}${_p_top}${_p_timeinfo}${_p_cmdtimeinfo}${_p_cmdstatusinfo}${_p_processinfo}"
-    print -P "${_p_stdcolor}${_p_mid2}${_p_userhostinfo}${_p_gitinfo}${_p_pwdinfo}"
-
-    _p_cmdline_f "        "
+    #print -P "${_p_stdcolor}"
+    #print -P "${_p_stdcolor}${_p_separator}"
+    #print -P "${_p_stdcolor}${_p_top}${_p_timeinfo}${_p_cmdtimeinfo}${_p_cmdstatusinfo}${_p_processinfo}"
+    print -P "${_p_stdcolor}${_p_userhostinfo}${_p_gitinfo}"
+    #_p_cmdline_f "        "
 }
 add-zsh-hook precmd _p_prompt
 
