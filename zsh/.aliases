@@ -10,7 +10,4 @@ alias grep='grep --color=auto '
 alias fgrep='fgrep --color=auto '
 alias egrep='egrep --color=auto '
 
-alias diff='diff --color=auto '
-
-alias gh='cd ~'
-alias lf='lfcd '
+alias x-start='startx "$XDOTDIR/.xinitrc" -- "$XDOTDIR/.xserverrc"'
