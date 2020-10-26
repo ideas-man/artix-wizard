@@ -1,6 +1,3 @@
-HISTFILE=~/.cache/zsh/history
-HISTSIZE=100000
-SAVEHIST=10000
 setopt appendhistory extendedglob nomatch
 unsetopt autocd beep notify
 
@@ -17,11 +14,11 @@ autoload -Uz run-help-sudo
 alias help=run-help
 
 # completion
-fpath=($fpath $HOME/.zsh/completion) 
+fpath=($fpath $ZDOTDIR/completion) 
 
 autoload -Uz compinit
 zmodload zsh/complist
-zstyle :compinstall filename "$HOME/.zshrc"
+zstyle :compinstall filename "$ZDOTDIR/.zshrc"
 zstyle ':completion:*' menu select
 compinit
 _comp_options+=(globdots) # Include hidden files
@@ -110,68 +107,6 @@ fi
 # disable ctrl+s/ctrl+q
 stty -ixon -ixoff
 
-# man
-man () 
-{
-  env \
-    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-    LESS_TERMCAP_md=$(printf "\e[1;33m") \
-    LESS_TERMCAP_me=$(printf "\e[0m") \
-    LESS_TERMCAP_so=$(printf "\e[7m") \
-    LESS_TERMCAP_se=$(printf "\e[0m") \
-    LESS_TERMCAP_us=$(printf "\e[1;32m") \
-    LESS_TERMCAP_ue=$(printf "\e[0m") \
-    man -P "less -Q" "$@"
-}
-
-cdlf ()
-{
-    if [ "$#" -gt 0 ]; then cd "$@"; fi
-    if [ -n "$id" ]; then lf -remote "send $id cd \"$PWD\""; fi
-}
-
-# lf
-lfcd () 
-{
-    tmp="$(mktemp)"
-    fid="$(mktemp)"
-    lf -command '$printf $id > '"$fid"'' -last-dir-path="$tmp" "$@"
-    id="$(cat "$fid")"
-    archivemount_dir="/tmp/__lf_archivemount_$id"
-    if [ -f "$archivemount_dir" ]; then
-        cat "$archivemount_dir" | \
-            while read -r line; do
-                umount "$line"
-                rmdir "$line"
-            done
-        rm -f "$archivemount_dir"
-    fi
-    if [ -f "$tmp" ]; then
-        dir="$(cat "$tmp")"
-        rm -f "$tmp"
-        if [ -d "$dir" ]; then
-            if [ "$dir" != "$(pwd)" ]; then
-                cd "$dir"
-            fi
-        fi
-    fi
-}
-
-
-tx ()
-{
-    DIR="$PWD"
-    cd ~
-    if [[ -o interactive ]] && [[ ! "$TERM" =~ "screen" ]] && [[ ! "$TERM" =~ "tmux" ]] && [ -z "$TMUX" ]
-    then tmux attach || . $HOME/.scripts/df/tmux-default-session.sh; fi
-    cd -- $DIR
-}
-
-txclip ()
-{
-    tmux set-buffer "$(cat)"
-}
-
 # color grid
 colorgrid ()
 {
@@ -240,17 +175,9 @@ spectrum ()
     }'
 }
 
-# aliases
-alias sudo='sudo '
-. $HOME/.aliases
+. $ZDOTDIR/.aliases
 { command -v xhost > /dev/null && xhost > /dev/null 2>&1 &&
-    [ -f $HOME/.xaliases ] && . $HOME/.xaliases; } || true
+    [ -f $ZDOTDIR/.xaliases ] && . $ZDOTDIR/.xaliases; } || true
 
 # unfreeze terminal if left frozen
 ttyctl -f
-
-# shell prompt
-#. $HOME/.zshrc.prompt
-
-# vim: set ft=zsh:
-
