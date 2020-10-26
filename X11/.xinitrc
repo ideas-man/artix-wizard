@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -f $HOME/.xprofile ] && . $HOME/.xprofile
+[ -f $XDOTDIR/.xprofile ] && . $XDOTDIR/.xprofile
 
 xrandr --auto
 
@@ -8,8 +8,8 @@ xrandr --auto
 xset r rate 500 20
 setxkbmap -layout "us,ru" -option "grp:win_space_toggle"
 
-userresources=$HOME/.xresources
-usermodmap=$HOME/.Xmodmap
+userresources=$XDOTDIR/.xresources
+usermodmap=$XDOTDIR/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
 
