@@ -175,9 +175,13 @@ spectrum ()
     }'
 }
 
+# aliases
 . $ZDOTDIR/.aliases
 { command -v xhost > /dev/null && xhost > /dev/null 2>&1 &&
     [ -f $ZDOTDIR/.xaliases ] && . $ZDOTDIR/.xaliases; } || true
+
+# shell prompt
+. $ZDOTDIR/.prompt
 
 # unfreeze terminal if left frozen
 ttyctl -f
