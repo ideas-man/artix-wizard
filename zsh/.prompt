@@ -104,7 +104,7 @@ _p_userhostinfo_f ()
     local HOST=$(hostname)
 
     local RootColor=$(_p_safe_color "$(_p_color 15 196)" "${_p_bold}$(_p_color 7 1)")
-    local UserColor=$(_p_safe_color "$(_p_color 39)" "${_p_bold}$(_p_color 2)")
+    local UserColor=$(_p_safe_color "$(_p_color 196)" "${_p_bold}$(_p_color 2)")
     [ "$(id -u)" -eq 0 ] && UserColor=$RootColor
     local HostColor=$(_p_safe_color "$(_p_color 196)" "${_p_bold}$(_p_color 4)")
 
@@ -343,9 +343,7 @@ TRAPINT ()
 
 _p_prompt ()
 {
-    #print -P "${_p_stdcolor}"
-    #print -P "${_p_stdcolor}${_p_separator}"
-    #print -P "${_p_stdcolor}${_p_top}${_p_timeinfo}${_p_cmdtimeinfo}${_p_cmdstatusinfo}${_p_processinfo}"
+
     print -P "${_p_userhostinfo}${_p_pwdinfo}${_p_gitinfo}"
 
     #_p_cmdline_f "${_p_default_prompt_text}"
