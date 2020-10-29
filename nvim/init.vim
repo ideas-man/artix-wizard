@@ -51,11 +51,15 @@ set undofile
 
 call plug#begin($XDG_CACHE_HOME . '/nvim/plugged')
 
-Plug 'scrooloose/nerdtree' { 'on': 'NERDTreeToggle' }
+Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-capslock'
 
+" Appearance
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
+"Plug 'itchyny/lightline.vim'
+Plug 'mhinz/vim-startify'
+Plug 'raymond-w-ko/vim-niji'
 Plug 'Yggdroot/indentLine'
 
 " Handy unix command inside Vim (Rename, Move etc.)
@@ -70,6 +74,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " pip install pynvim
 " pip install jedi
 Plug 'zchee/deoplete-jedi'
+
 " Python completion, goto definition etc.
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 " Python indent (follows the PEP8 style)
@@ -77,16 +82,16 @@ Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 
 " Code auto-format
 " pip install yapf
-Plug 'sbdchd/neoformat', { 'on': 'Neoformat' }
+"Plug 'sbdchd/neoformat', { 'on': 'Neoformat' }
+" pip install autopep8
+Plug 'Chiel92/vim-autoformat'
 
 " Linting
+" pip install flake8
 Plug 'dense-analysis/ale'
 
 " Yank highlight
 Plug 'machakann/vim-highlightedyank'
-
-" Markdown
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 
 call plug#end()
 
@@ -98,43 +103,41 @@ syntax enable
 " ###################### airline ######################
 let g:airline_theme='serene'
 
-" Tabline settings
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+" misc
+let g:airline_left_sep  = ''
+let g:airline_right_sep = ''
+let g:airline#extensions#ale#enabled = 1
 
-" Show buffer number for easier switching between buffer,
-" see https://github.com/vim-airline/vim-airline/issues/1149
-let g:airline#extensions#tabline#buffer_nr_show = 1
+" ###################### indentLine ######################
 
-" Buffer number display format
-let g:airline#extensions#tabline#buffer_nr_format = '%s. '
+let g:indentLine_char = '·'
+let g:indentLine_color_gui = '#888888'
 
-" Whether to show function or other tags on status line
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline#extensions#vista#enabled = 1
+set grepprg=rg\ --vimgrep\ --smart-case\ --follow
 
-" Do not show search index in statusline since it is shown on command line
-let g:airline#extensions#anzu#enabled = 0
+" ###################### vim-lightline ######################
 
-" Skip empty sections if there are nothing to show,
-" extracted from https://vi.stackexchange.com/a/9637/15292
-let g:airline_skip_empty_sections = 1
+"function! LanguageStatus(...) abort
+"    return &iminsert == 1 ? (a:0 == 1 ? a:1 : 'RU') : ''
+"endfunction
 
-" Whether to use powerline symbols, see https://vi.stackexchange.com/q/3359/15292
-let g:airline_powerline_fonts = 0
+"function! CapsLockStatus(...) abort
+"    return CapsLockStatusline('CAPS')
+"endfunction
 
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.spell = 'Ꞩ'
+"let g:lightline = {
+"      \ 'colorscheme': 'powerline',
+"      \ 'active': {
+"      \   'left': [ [ 'mode', 'lang', 'caps', 'paste' ],
+"      \             [ 'gitbranch', 'filename', 'readonly', 'modified' ] ]
+"      \ },
+"      \ 'component_function': {
+"      \   'lang': 'LanguageStatus',
+"      \   'caps': 'CapsLockStatus',
+"      \   'gitbranch': 'fugitive#head'
+"      \ },
+"      \ }
 
-" Only show git hunks which are non-zero
-let g:airline#extensions#hunks#non_zero_only = 1
-
-" Speed up airline
-let g:airline_highlighting_cache = 1
 " ###################### deoplete ######################
 let g:deoplete#enable_at_startup = 1
 " Candidate list item number limit
@@ -144,7 +147,7 @@ call deoplete#custom#option('max_list', 30)
 call deoplete#custom#option('num_processes', 16)
 
 " The delay for completion after input, measured in milliseconds.
-call deoplete#custom#option('auto_complete_delay', 100)
+call deoplete#custom#option('auto_complete_delay', 1000)
 
 " Enable deoplete auto-completion
 call deoplete#custom#option('auto_complete', v:true)
@@ -154,7 +157,7 @@ call deoplete#custom#option('auto_complete', v:true)
 let g:deoplete#sources#jedi#show_docstring = 0
 
 " For large package, set autocomplete wait time longer
-let g:deoplete#sources#jedi#server_timeout = 50
+let g:deoplete#sources#jedi#server_timeout = 500
 
 " Ignore jedi errors during completion
 let g:deoplete#sources#jedi#ignore_errors = 1
@@ -176,11 +179,13 @@ let g:jedi#show_call_signatures = '0'
 " ###################### ale settings ######################
 " linters for different filetypes
 let g:ale_linters = {
-  \ 'python': ['pylint'],
+  \ 'python': ['flake8'],
   \ 'vim': ['vint'],
   \ 'cpp': ['clang'],
   \ 'c': ['clang']
 \}
+
+let g:ale_enabled = 1
 
 " Only run linters in the g:ale_linters dictionary
 let g:ale_linters_explicit = 1
@@ -189,35 +194,22 @@ let g:ale_linters_explicit = 1
 let g:ale_sign_error = 'x'
 let g:ale_sign_warning = '!'
 
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
 " ###################### neoformat settings ######################
-let g:neoformat_enabled_python = ['black', 'yapf']
-let g:neoformat_cpp_clangformat = {
-  \ 'exe': 'clang-format',
-  \ 'args': ['--style="{IndentWidth: 4}"']
-\}
-let g:neoformat_c_clangformat = {
-  \ 'exe': 'clang-format',
-  \ 'args': ['--style="{IndentWidth: 4}"']
-\}
+"let g:neoformat_enabled_python = ['black', 'yapf']
+"let g:neoformat_cpp_clangformat = {
+"  \ 'exe': 'clang-format',
+"  \ 'args': ['--style="{IndentWidth: 4}"']
+"\}
+"let g:neoformat_c_clangformat = {
+"  \ 'exe': 'clang-format',
+"  \ 'args': ['--style="{IndentWidth: 4}"']
+"\}
 
-let g:neoformat_enabled_cpp = ['clangformat']
-let g:neoformat_enabled_c = ['clangformat']
-
-" ###################### plasticboy/vim-markdown settings ######################
-" Disable header folding
-let g:vim_markdown_folding_disabled = 1
-
-" Whether to use conceal feature in markdown
-let g:vim_markdown_conceal = 1
-
-" Disable math tex conceal and syntax highlight
-let g:tex_conceal = ''
-let g:vim_markdown_math = 0
-
-" Support front matter of various format
-let g:vim_markdown_frontmatter = 1  " for YAML format
-let g:vim_markdown_toml_frontmatter = 1  " for TOML format
-let g:vim_markdown_json_frontmatter = 1  " for JSON format
-
-" Let the TOC window autofit so that it doesn't take too much space
-let g:vim_markdown_toc_autofit = 1
+"let g:neoformat_enabled_cpp = ['clangformat']
+"let g:neoformat_enabled_c = ['clangformat']
