@@ -14,6 +14,10 @@ XF86AudioRaiseVolume
 XF86AudioLowerVolume
 	amixer set Master 5-
 
+# passmenu
+XF86Tools
+	passmenu
+
 # printscreen
 Print
 	maim -s | xclip -selection clipboard -t image/png
