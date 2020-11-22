@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd $HOME
-starx "$XDOTDIR/.xinitrc" -- "$XDOTDIR/.xserverrc"
+startx "$XDOTDIR/.xinitrc" -- "$XDOTDIR/.xserverrc"
