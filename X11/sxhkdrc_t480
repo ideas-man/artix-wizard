@@ -1,0 +1,31 @@
+# mute
+XF86AudioMute
+	amixer set Master toggle
+
+# toggle mic
+XF86AudioMicMute
+	amixer set Capture toggle
+
+# vol up
+XF86AudioRaiseVolume
+	amixer set Master 5+
+
+# vol down
+XF86AudioLowerVolume
+	amixer set Master 5-
+
+# passmenu
+XF86Tools
+	passmenu
+
+# printscreen
+Print
+	maim -s | xclip -selection clipboard -t image/png
+
+# toggle bt
+XF86Bluetooth
+	if [ $(connmanctl technologies | grep -A 3 "/net/connman/technology/bluetooth" | tail -1 | sed 's/\s*Powered =\s*//') = "False" ]; then 
+    	connmanctl enable bluetooth
+	else
+    	connmanctl disable bluetooth
+	fi
