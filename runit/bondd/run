@@ -1,0 +1,13 @@
+#!/bin/sh
+exec 2>&1
+sv once bondd
+sleep 1
+ip link set dev bond0 down
+ip addr add 192.168.1.23/24 dev bond0
+ip link set dev bond0 address 2e:a8:a5:a1:13:97
+ip link set enp2s0 down
+ip link set eno1 down
+ip link set enp2s0 master bond0
+ip link set eno1 master bond0
+ip link set dev bond0 up
+sleep 1
