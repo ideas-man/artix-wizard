@@ -107,73 +107,7 @@ fi
 # disable ctrl+s/ctrl+q
 stty -ixon -ixoff
 
-# color grid
-colorgrid ()
-{
-    local iter=0
-    while [ $iter -lt 16 ]
-    do
-        echo -en "\033[38;5;$(echo $iter)m█ "
-        printf "%03d" $iter
 
-        if [ $(($iter % 8)) = 7 ]
-        then printf '\r\n'; else printf ' '; fi
-
-        local iter=$(($iter+1))
-    done
-
-    printf '\r\n'
-
-    local iter=16
-    while [ $iter -lt 52 ]
-    do
-        local second=$(($iter+36))
-        local third=$(($second+36))
-        local four=$(($third+36))
-        local five=$(($four+36))
-        local six=$(($five+36))
-        local seven=$(($six+36))
-
-        echo -en "\033[38;5;$(echo $iter)m█ "
-        printf "%03d" $iter
-        echo -en "   \033[38;5;$(echo $second)m█ "
-        printf "%03d" $second
-        echo -en "   \033[38;5;$(echo $third)m█ "
-        printf "%03d" $third
-        echo -en "   \033[38;5;$(echo $four)m█ "
-        printf "%03d" $four
-        echo -en "   \033[38;5;$(echo $five)m█ "
-        printf "%03d" $five
-        echo -en "   \033[38;5;$(echo $six)m█ "
-        printf "%03d" $six
-        if [ $seven -lt 256 ]; then
-            echo -en "   \033[38;5;$(echo $seven)m█ "
-            printf "%03d" $seven
-        fi
-
-        local iter=$(($iter+1))
-        printf '\r\n'
-    done
-}
-
-spectrum ()
-{
-    # Based on: https://gist.github.com/XVilka/8346728
-    # echo $COLORTERM
-    awk -v term_cols="$(tput cols)" 'BEGIN{
-        s="··";
-        for (colnum = 0; colnum<term_cols; colnum++) {
-            r = 255-(colnum*255/term_cols);
-            g = (colnum*510/term_cols);
-            b = (colnum*255/term_cols);
-            if (g>255) g = 510-g;
-                printf "\033[48;2;%d;%d;%dm", r,g,b;
-                printf "\033[38;2;%d;%d;%dm", 255-r,255-g,255-b;
-                printf "%s\033[0m", substr(s,colnum%2+1,1);
-            }
-        printf "\n";
-    }'
-}
 
 source_conda ()
 {
