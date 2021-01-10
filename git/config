@@ -1,8 +1,8 @@
 # This is Git's per-user configuration file.
 [core]
-    editor = vim
-    excludesfile = ~/.gitignore_global
-    pager = less
+    editor = nvim
+    excludesfile = ~/.config/git/ignore
+    pager = nvimpager
 [diff]
     tool = vimdiff
 [difftool]
