@@ -1,5 +1,0 @@
-alias screenshot='maim -s | xclip -selection clipboard -t image/png'
-alias volup='amixer set Master 5+'
-alias voldown='amixer set Master 5-'
-alias voltoggle='amixer set Master toggle'
-alias mictoggle='amixer set Capture toggle'
