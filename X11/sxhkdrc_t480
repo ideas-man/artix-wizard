@@ -1,18 +1,21 @@
 # mute
 XF86AudioMute
-	amixer set Master toggle
+	SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
+	pactl set-sink-mute "$SINK" toggle
 
 # toggle mic
 XF86AudioMicMute
-	amixer set Capture toggle
+	pactl set-source-mute 6 toggle
 
 # vol up
 XF86AudioRaiseVolume
-	amixer set Master 5+
+	SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
+	pactl set-sink-volume "$SINK" +5%
 
 # vol down
 XF86AudioLowerVolume
-	amixer set Master 5-
+	SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
+	pactl set-sink-volume "$SINK" -5%
 
 # passmenu
 XF86Tools
