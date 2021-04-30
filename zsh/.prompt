@@ -1,4 +1,4 @@
-# Auxilliary constants & functions {{{
+# Auxilliary constants & functions
 
 _p_colors=$(tput colors)
 _p_bold="%B"
@@ -40,9 +40,7 @@ _p_ellipsis="${_p_dot}${_p_dot}${_p_dot}"
 _p_default_prompt_text=">"
 [ "$_p_colors" -ge 256 ] && _p_default_prompt_text="%F{240}$_p_default_prompt_text"
 
-# }}}
-# Initialization {{{
-# Shell info {{{
+# Shell info
 _p_shellinfo_f ()
 {
     local Tty=$(tty | sed 's@^/dev/@@')
@@ -55,7 +53,6 @@ _p_shellinfo_f ()
     _p_cmd_nr=$(($_p_cmd_nr + 1))
 }
 add-zsh-hook precmd _p_shellinfo_f
-# }}}
 
 _p_preexec ()
 {
@@ -93,10 +90,7 @@ _p_prompt_init_f ()
 }
 add-zsh-hook precmd _p_prompt_init_f
 
-# }}}
-# }}}
-# Second line {{{
-# User@host {{{
+# User@host
 
 _p_userhostinfo_f ()
 {
@@ -139,8 +133,7 @@ _p_userhostinfo_f ()
 }
 add-zsh-hook precmd _p_userhostinfo_f
 
-# }}}
-# git info {{{
+# git info
 
 _p_gitinfo_f ()
 {
@@ -234,8 +227,7 @@ _p_gitinfo_f ()
 }
 add-zsh-hook precmd _p_gitinfo_f
 
-# }}}
-# Current directory {{{
+# Current directory
 
 _p_pwdinfo_f ()
 {
@@ -294,9 +286,13 @@ _p_pwdinfo_f ()
 }
 add-zsh-hook precmd _p_pwdinfo_f
 
-# }}}
-# }}}
-# Third line {{{
+# conda env
+
+_p_conda_info_f ()
+{
+    _p_conda_info=" ${_p_pilcrow} $(echo $CONDA_DEFAULT_ENV)"
+}
+add-zsh-hook precmd _p_conda_info_f
 
 _p_cmdline_f ()
 {
@@ -338,18 +334,10 @@ TRAPINT ()
     return $(( 128 + $1 ))
 } 
 
-# }}}
-# Prompt itself {{{
+# Prompt itself
 
 _p_prompt ()
 {
-
-    print -P "${_p_userhostinfo}${_p_pwdinfo}${_p_gitinfo}"
-
-    #_p_cmdline_f "${_p_default_prompt_text}"
+    print -P "${_p_userhostinfo}${_p_pwdinfo}${_p_gitinfo}${_p_conda_info}"
 }
 add-zsh-hook precmd _p_prompt
-
-# }}}
-
-# vim: ft=zsh: foldmethod=marker:
