@@ -290,7 +290,12 @@ add-zsh-hook precmd _p_pwdinfo_f
 
 _p_conda_info_f ()
 {
-    _p_conda_info=" ${_p_pilcrow} $(echo $CONDA_DEFAULT_ENV)"
+    if [ "$CONDA_DEFAULT_ENV" = "" ]
+    then
+        _p_conda_info=""
+        return
+    fi
+    _p_conda_info=" ${_p_pilcrow} ${CONDA_DEFAULT_ENV}"
 }
 add-zsh-hook precmd _p_conda_info_f
 
