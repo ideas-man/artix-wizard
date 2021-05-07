@@ -42,8 +42,10 @@ sxhkd &
 while true
 do
 	VOL="VOL:$(amixer get Master | tail -1 | sed 's/.*\[\([0-9]*%\)\].*/\1/')"
-	LOCALTIME="TIME:$(date +%Y.%m.%d'/'%H:%M)"
+	LOCALTIME="TIME:$(date +%d.%m.%Y'/'%H:%M)"
 	IP="IP:$(for i in `ip r`; do echo $i; done | grep -A 1 src | tail -n1)"
+	#TEMP="TEMP:$(($(cat /sys/class/thermal/thermal_zone0/temp) / 1000))C"
+	BAT="BAT:$(acpi -b | grep -o '[[:digit:]]*%' | tr '\n' '/' | head -c -1)"
 
 	PWIFI=$(connmanctl technologies | grep -A 3 "/net/connman/technology/wifi" | tail -1 | sed 's/\s*Powered =\s*//')
 	case $PWIFI in
@@ -81,15 +83,13 @@ do
 	esac
 	BT="BT:$BTPWR/$BTCON"
 
-	TEMP="TEMP:$(($(cat /sys/class/thermal/thermal_zone0/temp) / 1000))C"
-	BAT="BAT:$(acpi -b | grep -o '[[:digit:]]*%' | tr '\n' '/' | head -c -1)"
 	SLANG=$(xset -q | grep LED | awk '{print $10}' | sed -E 's/....(.).../\1/')
 	case $SLANG in
 		0) LANG="LANG:EN";;
 		1) LANG="LANG:RU";;
 	esac
-	
-	xsetroot -name "$IP|$WIFI|$ETH|$BT|$BAT|$VOL|$TEMP|$LANG|$LOCALTIME"
+
+	xsetroot -name "$BAT|$IP|$WIFI|$ETH|$BT|$VOL|$LANG|$LOCALTIME"
 
 	sleep 5s
 done &
