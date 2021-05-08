@@ -1,0 +1,22 @@
+# This is Git's per-user configuration file.
+[core]
+    editor = nvim
+    excludesfile = ~/.config/git/ignore
+    pager = nvimpager
+[diff]
+    tool = vimdiff
+[difftool]
+    prompt = false
+    trustExitCode = true
+[alias]
+    dif = difftool
+
+[merge]
+    tool = vimdiff
+[mergetool]
+    prompt = false
+    trustExitCode = true
+
+[user]
+    email = ideasman.git@protonmail.com
+    name = ideas-man

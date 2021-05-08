@@ -1,0 +1,10 @@
+# XDG User Directories
+
+export XDG_DOWNLOAD_DIR="$HOME/downloads"
+export XDG_DESKTOP_DIR="$XDG_DOWNLOAD_DIR"
+export XDG_PICTURES_DIR="$XDG_DOWNLOAD_DIR/pictures"
+export XDG_MUSIC_DIR="$XDG_DOWNLOAD_DIR/music"
+export XDG_VIDEOS_DIR="$XDG_DOWNLOAD_DIR/videos"
+export XDG_DOCUMENTS_DIR="$XDG_DOWNLOAD_DIR/documents"
+export XDG_PUBLICSHARE_DIR="$XDG_DOWNLOAD_DIR/public"
+export XDG_TEMPLATES_DIR="$XDG_DOWNLOAD_DIR/templates"

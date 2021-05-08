@@ -1,0 +1,34 @@
+# mute
+XF86AudioMute
+	SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
+	pactl set-sink-mute "$SINK" toggle
+
+# toggle mic
+XF86AudioMicMute
+	pactl set-source-mute 6 toggle
+
+# vol up
+XF86AudioRaiseVolume
+	SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
+	pactl set-sink-volume "$SINK" +5%
+
+# vol down
+XF86AudioLowerVolume
+	SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
+	pactl set-sink-volume "$SINK" -5%
+
+# passmenu
+XF86Tools
+	passmenu
+
+# printscreen
+Print
+	maim -s | xclip -selection clipboard -t image/png
+
+# toggle bt
+XF86Bluetooth
+	if [ $(connmanctl technologies | grep -A 3 "/net/connman/technology/bluetooth" | tail -1 | sed 's/\s*Powered =\s*//') = "False" ]; then 
+    	connmanctl enable bluetooth
+	else
+    	connmanctl disable bluetooth
+	fi

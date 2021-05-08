@@ -1,0 +1,4 @@
+
+# User configuration
+%$USERNAME ALL=(ALL) ALL
+%$USERNAME ALL=(ALL) NOPASSWD: /usr/bin/reboot,/usr/bin/poweroff,/usr/bin/halt
