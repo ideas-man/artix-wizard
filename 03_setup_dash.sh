@@ -10,4 +10,4 @@ check_root
 ln -sfT dash /usr/bin/sh
 
 mkdir -p /etc/pacman.d/hooks/
-install -Dm 644 -t /etc/pacman.d/hooks/ "dotfiles/dash/dash.hook"
+install -Dm 644 -t /etc/pacman.d/hooks/ "$ROOT_DIR/dotfiles/dash/dash.hook"

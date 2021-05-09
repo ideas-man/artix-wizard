@@ -8,7 +8,7 @@ print_message "#### Configuring SSH ####"
 check_user
 
 mkdir -p $HOME/.ssh
-ln -sf $ROOT_DIR/dotfiles/ssh/config $HOME/.ssh/confg
+ln -sf $ROOT_DIR/dotfiles/ssh/config $HOME/.ssh/config
 
 chmod 700 $HOME/.ssh/
 chmod 600 $HOME/.ssh/config

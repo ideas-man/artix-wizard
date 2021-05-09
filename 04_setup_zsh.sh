@@ -10,7 +10,7 @@ check_user
 sudo mkdir -p /var/cache/zsh/
 
 sudo mkdir -p /etc/pacman.d/hooks/
-sudo install -Dm 644 -t /etc/pacman.d/hooks/ "dotfiles/zsh/zsh.hook"
+sudo install -Dm 644 -t /etc/pacman.d/hooks/ "$ROOT_DIR/dotfiles/zsh/zsh.hook"
 
 mkdir -p $HOME/.cache/zsh
 

@@ -25,4 +25,4 @@ sed -i "s/^UsePAM .*/UsePAM no/" /etc/ssh/sshd_config
 sed -i "s/^#X11Forwarding .*/X11Forwarding yes/" /etc/ssh/sshd_config
 sed -i "s/^#X11UseLocalhost .*/X11UseLocalhost yes/" /etc/ssh/sshd_config
 sed -i "/^Subsystem.*sftp.*/ s/Subsystem/#Subsystem/" /etc/ssh/sshd_config
-cat "dotfiles/ssh/sshd_config_tail" | tee -a /etc/ssh/sshd_config
+cat "$ROOT_DIR/dotfiles/ssh/sshd_config_tail" | tee -a /etc/ssh/sshd_config

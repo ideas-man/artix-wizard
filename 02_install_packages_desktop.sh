@@ -15,7 +15,7 @@ install_official_packages sshfs encfs
 install_official_packages wget rsync
 install_official_packages dosfstools ntfs-3g inotify-tools entr
 install_official_packages ncdu
-install_official_packages unzip unrar p7zip atool
+install_official_packages unzip unrar p7zip atool cpio lhasa izop unace zip
 
 install_official_packages cpupower usbutils usb_modeswitch
 
