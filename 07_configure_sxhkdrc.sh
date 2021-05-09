@@ -10,4 +10,4 @@ check_user
 
 mkdir -p $HOME/.config/sxhkd
 
-ln -sf $ROOT_DIR/dotfiles/sxhkd/.xinitrc $HOME/.config/sxhkd/sxhkdrc
+ln -sf $ROOT_DIR/dotfiles/sxhkd/sxhkdrc $HOME/.config/sxhkd/sxhkdrc
