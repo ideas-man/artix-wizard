@@ -37,7 +37,7 @@ _p_pilcrow="¶"
 
 _p_ellipsis="${_p_dot}${_p_dot}${_p_dot}"
 
-_p_default_prompt_text=">"
+_p_default_prompt_text="#"
 [ "$_p_colors" -ge 256 ] && _p_default_prompt_text="%F{240}$_p_default_prompt_text"
 
 # Shell info
@@ -97,10 +97,10 @@ _p_userhostinfo_f ()
     local USER=$(whoami)
     local HOST=$(hostname)
 
-    local RootColor=$(_p_safe_color "$(_p_color 15 196)" "${_p_bold}$(_p_color 7 1)")
-    local UserColor=$(_p_safe_color "$(_p_color 196)" "${_p_bold}$(_p_color 2)")
+    local RootColor=$(_p_safe_color "$(_p_color 255 196)" "${_p_bold}$(_p_color 7 1)")
+    local UserColor=$(_p_safe_color "$(_p_color 255)" "${_p_bold}$(_p_color 2)")
     [ "$(id -u)" -eq 0 ] && UserColor=$RootColor
-    local HostColor=$(_p_safe_color "$(_p_color 196)" "${_p_bold}$(_p_color 4)")
+    local HostColor=$(_p_safe_color "$(_p_color 255)" "${_p_bold}$(_p_color 4)")
 
     local _p_username="${UserColor}${USER}${_p_stdcolor}"
     local _p_hostname="${HostColor}${HOST}${_p_stdcolor}"
@@ -128,7 +128,7 @@ _p_userhostinfo_f ()
         fi
     fi
 
-    _p_userhostinfo_length="$((3 + $_p_username_length + $_p_hostname_length))"
+    _p_userhostinfo_length="$(($_p_username_length + $_p_hostname_length))"
     _p_userhostinfo="  ${_p_username}@${_p_hostname}"
 }
 add-zsh-hook precmd _p_userhostinfo_f
