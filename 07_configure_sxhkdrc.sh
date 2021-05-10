@@ -1,13 +1,16 @@
 #!/bin/sh
 
-ROOT_DIR="$(realpath "$(dirname "$0")")"
-. "$ROOT_DIR/.wizard_utils.sh"
+. "./.wizard_utils.sh"
 
-
-print_message "#### Installing X server ####"
+print_header ">>> Configuring sxhkd <<<"
 
 check_user
 
-mkdir -p $HOME/.config/sxhkd
+###############################################################################
 
-ln -sf $ROOT_DIR/dotfiles/sxhkd/sxhkdrc $HOME/.config/sxhkd/sxhkdrc
+print_subheader ">>> Creating symlinks... <<<"
+
+mkdir -p $HOME/.config/sxhkd
+ln -sf $WIZARD_DOT/sxhkd/sxhkdrc $HOME/.config/sxhkd/sxhkdrc
+
+print_subheader ">>> Done! <<<"

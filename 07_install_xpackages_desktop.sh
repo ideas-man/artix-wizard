@@ -1,11 +1,12 @@
 #!/bin/sh
 
-ROOT_DIR="$(realpath "$(dirname "$0")")"
-. "$ROOT_DIR/.wizard_utils.sh"
+. "./.wizard_utils.sh"
 
-print_message "#### Installing X server ####"
+print_header ">>> Installing core packages for workstation graphical environment <<<"
 
 check_user
+
+###############################################################################
 
 install_official_packages xorg xorg-xinit
 
@@ -44,3 +45,5 @@ install_official_packages simple-scan
 install_official_packages inkscape
 
 install_official_packages code
+
+print_subheader ">>> Done! <<<"

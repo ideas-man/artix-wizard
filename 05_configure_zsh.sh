@@ -1,21 +1,21 @@
 #!/bin/sh
 
-ROOT_DIR="$(realpath "$(dirname "$0")")"
-. "$ROOT_DIR/.wizard_utils.sh"
+. "./.wizard_utils.sh"
 
-print_message "#### Configuring zsh ####"
+print_header ">>> Configuring zsh <<<"
+
+###############################################################################
+
+print_subheader ">>> Creating symlinks... <<<"
 
 mkdir -p $HOME/.config/zsh
+ln -sf $WIZARD_DOT/zsh/.zshenv $HOME/
+ln -sf $WIZARD_DOT/zsh/.zshrc $HOME/.config/zsh/.zshrc
+ln -sf $WIZARD_DOT/zsh/.zprofile $HOME/.config/zsh/.zprofile
+ln -sf $WIZARD_DOT/zsh/.zlogin $HOME/.config/zsh/.zlogin
+ln -sf $WIZARD_DOT/zsh/.zlogout $HOME/.config/zsh/.zlogout
+ln -sf $WIZARD_DOT/zsh/.prompt $HOME/.config/zsh/.prompt
+ln -sf $WIZARD_DOT/zsh/.functions $HOME/.config/zsh/.functions
+ln -sf $WIZARD_DOT/zsh/.aliases $HOME/.config/zsh/.aliases
 
-ln -sf $ROOT_DIR/dotfiles/zsh/.zshenv $HOME/
-
-ln -sf $ROOT_DIR/dotfiles/zsh/.zshrc $HOME/.config/zsh/.zshrc
-ln -sf $ROOT_DIR/dotfiles/zsh/.zprofile $HOME/.config/zsh/.zprofile
-
-ln -sf $ROOT_DIR/dotfiles/zsh/.zlogin $HOME/.config/zsh/.zlogin
-ln -sf $ROOT_DIR/dotfiles/zsh/.zlogout $HOME/.config/zsh/.zlogout
-
-ln -sf $ROOT_DIR/dotfiles/zsh/.prompt $HOME/.config/zsh/.prompt
-ln -sf $ROOT_DIR/dotfiles/zsh/.functions $HOME/.config/zsh/.functions
-
-ln -sf $ROOT_DIR/dotfiles/zsh/.aliases $HOME/.config/zsh/.aliases
+print_subheader ">>> Done! <<<"

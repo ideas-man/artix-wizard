@@ -1,13 +1,24 @@
 #!/bin/sh
 
-ROOT_DIR="$(realpath "$(dirname "$0")")"
-. "$ROOT_DIR/.wizard_utils.sh"
+. "./.wizard_utils.sh"
 
-print_message "#### Making dash the default script interpreter ####"
+print_header ">>> Setting dash the default script interpreter <<<"
 
 check_root
 
+###############################################################################
+
+print_subheader ">>> Creating a symlink to /usr/bin/sh... <<<"
+
 ln -sfT dash /usr/bin/sh
 
+print_subheader ">>> Done! <<<"
+
+###############################################################################
+
+print_subheader ">>> Installing a pacman hook... <<<"
+
 mkdir -p /etc/pacman.d/hooks/
-install -Dm 644 -t /etc/pacman.d/hooks/ "$ROOT_DIR/dotfiles/dash/dash.hook"
+install -Dm 644 -t /etc/pacman.d/hooks/ "$WIZARD_DOT/dash/dash.hook"
+
+print_subheader ">>> Done! <<<"

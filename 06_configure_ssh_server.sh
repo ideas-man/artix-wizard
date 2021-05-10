@@ -1,18 +1,23 @@
 #!/bin/sh
 
-ROOT_DIR="$(realpath "$(dirname "$0")")"
-. "$ROOT_DIR/.wizard_utils.sh"
+. "./.wizard_utils.sh"
 
-print_message "#### Configuring SSH ####"
+print_header ">>> Configuring SSH for server <<<"
 
 check_root
 
-print_message "Creating groups..."
+###############################################################################
+
+print_subheader ">>> Creating groups... <<<"
 
 groupadd ssh-users
 groupadd sftp-users
 
-print_message "Configuring SSH..."
+print_subheader ">>> Done! <<<"
+
+###############################################################################
+
+print_subheader ">>> Configuring SSH server... <<<"
 
 SSH_PORT=62222
 
@@ -25,4 +30,6 @@ sed -i "s/^UsePAM .*/UsePAM no/" /etc/ssh/sshd_config
 sed -i "s/^#X11Forwarding .*/X11Forwarding yes/" /etc/ssh/sshd_config
 sed -i "s/^#X11UseLocalhost .*/X11UseLocalhost yes/" /etc/ssh/sshd_config
 sed -i "/^Subsystem.*sftp.*/ s/Subsystem/#Subsystem/" /etc/ssh/sshd_config
-cat "$ROOT_DIR/dotfiles/ssh/sshd_config_tail" | tee -a /etc/ssh/sshd_config
+cat "$WIZARD_DOT/ssh/sshd_config_tail" | tee -a /etc/ssh/sshd_config
+
+print_subheader ">>> Done! <<<"

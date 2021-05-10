@@ -1,14 +1,25 @@
 #!/bin/sh
 
-ROOT_DIR="$(realpath "$(dirname "$0")")"
-. "$ROOT_DIR/.wizard_utils.sh"
+. "./.wizard_utils.sh"
 
-print_message "#### Configuring SSH ####"
+print_header ">>> Configuring SSH for desktop <<<"
 
 check_user
 
+###############################################################################
+
+print_subheader ">>> Creating symlinks... <<<"
+
 mkdir -p $HOME/.ssh
-ln -sf $ROOT_DIR/dotfiles/ssh/config $HOME/.ssh/config
+ln -sf $WIZARD_DOT/ssh/config $HOME/.ssh/config
+
+print_subheader ">>> Done! <<<"
+
+###############################################################################
+
+print_subheader ">>> Setting permissions... <<<"
 
 chmod 700 $HOME/.ssh/
 chmod 600 $HOME/.ssh/config
+
+print_subheader ">>> Done! <<<"

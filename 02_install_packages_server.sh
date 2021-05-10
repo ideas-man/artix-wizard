@@ -1,11 +1,12 @@
 #!/bin/sh
 
-ROOT_DIR="$(realpath "$(dirname "$0")")"
-. "$ROOT_DIR/.wizard_utils.sh"
+. "./.wizard_utils.sh"
 
-print_message "#### Installing core packages for server ####"
+print_header ">>> Installing core packages for server environment <<<"
 
 check_user
+
+###############################################################################
 
 install_official_packages man-db man-pages
 install_official_packages dash
@@ -46,3 +47,5 @@ install_official_packages nfs-utils nfs-utils-runit
 install_official_packages rpcbind rpcbind-runit
 
 install_packages nvimpager-git archivemount
+
+print_subheader ">>> Done! <<<"

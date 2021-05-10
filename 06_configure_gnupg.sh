@@ -1,17 +1,27 @@
 #!/bin/sh
 
-ROOT_DIR="$(realpath "$(dirname "$0")")"
-. "$ROOT_DIR/.wizard_utils.sh"
+. "./.wizard_utils.sh"
 
-print_message "#### Configuring SSH ####"
+print_header ">>> Configuring GNUPG <<<"
 
 check_user
 
-mkdir -p $HOME/.local/share/gnupg
+###############################################################################
 
-ln -sf $ROOT_DIR/dotfiles/gnupg/gpg-agent.conf $HOME/.local/share/gnupg/gpg-agent.conf
-ln -sf $ROOT_DIR/dotfiles/gnupg/gpg.conf $HOME/.local/share/gnupg/gpg.conf
+print_subheader ">>> Creating symlinks... <<<"
+
+mkdir -p $HOME/.local/share/gnupg
+ln -sf $WIZARD_DOT/gnupg/gpg-agent.conf $HOME/.local/share/gnupg/gpg-agent.conf
+ln -sf $WIZARD_DOT/gnupg/gpg.conf $HOME/.local/share/gnupg/gpg.conf
+
+print_subheader ">>> Done! <<<"
+
+###############################################################################
+
+print_subheader ">>> Setting permissions... <<<"
 
 chmod 700 $HOME/.local/share/gnupg/
 chmod 600 $HOME/.local/share/gnupg/gpg.conf
 chmod 600 $HOME/.local/share/gnupg/gpg-agent.conf
+
+print_subheader ">>> Done! <<<"

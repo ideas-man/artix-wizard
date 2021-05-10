@@ -1,20 +1,25 @@
 #!/bin/sh
 
-ROOT_DIR="$(realpath "$(dirname "$0")")"
-. "$ROOT_DIR/.wizard_utils.sh"
+. "./.wizard_utils.sh"
 
-####################################################################
-
-print_message "#### Configuring mandb ####"
-
-####################################################################
+print_header ">>> Setting up cron jobs <<<"
 
 check_root
 
-####################################################################
+###############################################################################
+
+print_subheader ">>> Daily mandb update... <<<"
 
 add_cronjob '@daily /usr/bin/mandb'
 mandb
 
+print_subheader ">>> Done! <<<"
+
+###############################################################################
+
+print_subheader ">>> Daily pkgfile update... <<<"
+
 add_cronjob '@daily /usr/bin/pkgfile --update'
 pkgfile --update
+
+print_subheader ">>> Done! <<<"

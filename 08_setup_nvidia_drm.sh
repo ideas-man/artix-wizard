@@ -1,11 +1,14 @@
 #!/bin/sh
 
-ROOT_DIR="$(realpath "$(dirname "$0")")"
-. "$ROOT_DIR/.wizard_utils.sh"
+. "./.wizard_utils.sh"
 
-print_message "#### Enabling Nvidia Direct Rendering Manager ####"
+print_header ">>> Enabling Nvidia Direct Rendering Manager <<<"
 
 check_root
+
+###############################################################################
+
+print_subheader ">>> Installing a dkms and prime packages... <<<"
 
 install_official_packages nvidia-dkms nvidia-prime
 
@@ -19,3 +22,5 @@ grep -q '^GRUB_CMDLINE_LINUX_DEFAULT=[^#]*nvidia' /etc/default/grub || {
     sed -i "/^GRUB_CMDLINE_LINUX_DEFAULT=/ s@\"@\"nvidia-drm.modeset=1 @" /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
 }
+
+print_subheader ">>> Done! <<<"
