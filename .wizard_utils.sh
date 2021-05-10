@@ -1,5 +1,8 @@
 # author: ivanp7 (https://github.com/ivanp7/archlinux-autoconfig)
 
+WIZARD_ROOT="$(realpath "$(dirname "$0")")"
+WIZARD_DOT="$WIZARD_ROOT/dotfiles"
+
 check_root ()
 {
     if [ "$(id -u)" != "0" ]; then
@@ -38,11 +41,18 @@ add_cronjob ()
     crontab -l | { cat; echo "$@"; } | crontab -
 }
 
-print_message ()
+print_header ()
 {
     echo
     echo $(printf '%0.s-' $(seq 1 $(echo $* | wc -c)))
     echo $*
     echo $(printf '%0.s-' $(seq 1 $(echo $* | wc -c)))
+    echo
+}
+
+print_subheader ()
+{
+    echo
+    echo $*
     echo
 }
