@@ -10,13 +10,12 @@ check_user
 
 install_official_packages xorg xorg-xinit
 
-install_official_packages xf86-video-fbdev 
+print_subheader ">>> Remember to choose GPU drivers to install!"
 
-install_official_packages xf86-video-amdgpu
-
-install_official_packages xf86-video-intel
-
-install_official_packages xf86-video-vesa
+#install_official_packages xf86-video-amdgpu
+#install_official_packages xf86-video-intel
+#install_official_packages xf86-video-fbdev 
+#install_official_packages xf86-video-vesa
 
 install_official_packages sxhkd
 
