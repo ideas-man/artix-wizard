@@ -16,7 +16,7 @@ install_official_packages sshfs encfs
 install_official_packages wget rsync
 install_official_packages dosfstools ntfs-3g inotify-tools entr
 install_official_packages ncdu
-install_official_packages unzip unrar p7zip atool cpio lhasa izop unace zip
+install_official_packages unzip unrar p7zip atool cpio lhasa lzop unace zip
 
 install_official_packages cpupower usbutils usb_modeswitch
 
@@ -34,7 +34,7 @@ install_official_packages tmux
 install_official_packages fzf
 install_official_packages pass
 install_official_packages alsa-utils
-install_official_packages pulseaudio pulseaudio-bluetooth
+install_official_packages pulseaudio pulseaudio-bluetooth pamixer
 
 install_official_packages neofetch htop iftop iotop powertop iptraf-ng
 
