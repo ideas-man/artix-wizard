@@ -42,8 +42,9 @@ sxhkd &
 while true
 do
 	#VOL="VOL:$(amixer get Master | tail -1 | sed 's/.*\[\([0-9]*%\)\].*/\1/')"
-	SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//')
-	VOL="VOL:$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')"
+	#SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//')
+	#VOL="VOL:$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')"
+	VOL="VOL:$(pamixer --get-volume)"
 	LOCALTIME="TIME:$(date +%d.%m.%Y'/'%H:%M)"
 	IP="IP:$(for i in `ip r`; do echo $i; done | grep -A 1 src | tail -n1)"
 	#TEMP="TEMP:$(($(cat /sys/class/thermal/thermal_zone0/temp) / 1000))C"
@@ -93,6 +94,6 @@ do
 
 	xsetroot -name "$BAT|$IP|$WIFI|$ETH|$BT|$VOL|$LANG|$LOCALTIME"
 
-	sleep 5s
+	sleep 1s
 done &
 exec dwm
