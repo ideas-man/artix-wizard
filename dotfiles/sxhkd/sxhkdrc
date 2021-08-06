@@ -1,21 +1,24 @@
 # mute
+#SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
+#pactl set-sink-mute "$SINK" toggle
 XF86AudioMute
-	SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
-	pactl set-sink-mute "$SINK" toggle
+	pamixer -t
 
 # toggle mic
 XF86AudioMicMute
 	pactl set-source-mute 6 toggle
 
 # vol up
+#SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
+#pactl set-sink-volume "$SINK" +5%
 XF86AudioRaiseVolume
-	SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
-	pactl set-sink-volume "$SINK" +5%
+	pamixer -i 5
 
 # vol down
+#SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
+#pactl set-sink-volume "$SINK" -5%
 XF86AudioLowerVolume
-	SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//');\
-	pactl set-sink-volume "$SINK" -5%
+	pamixer -d 5
 
 # passmenu
 XF86Tools
