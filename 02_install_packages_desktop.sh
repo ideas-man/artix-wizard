@@ -50,8 +50,7 @@ install_official_packages rng-tools rng-tools-runit
 install_official_packages tlp tlp-runit 
 install_official_packages acpi acpid-runit
 install_official_packages openssh openssh-runit 
-#install_official_packages ntp ntp-runit
-install_official_packages openntpd openntpd-runit
+install_official_packages chrony chrony-runit
 install_official_packages dhcpcd dhcpcd-runit
 install_official_packages nfs-utils nfs-utils-runit
 install_official_packages rpcbind rpcbind-runit
