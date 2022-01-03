@@ -286,19 +286,6 @@ _p_pwdinfo_f ()
 }
 add-zsh-hook precmd _p_pwdinfo_f
 
-# conda env
-
-_p_conda_info_f ()
-{
-    if [ "$CONDA_DEFAULT_ENV" = "" ]
-    then
-        _p_conda_info=""
-        return
-    fi
-    _p_conda_info=" ${_p_pilcrow} ${CONDA_DEFAULT_ENV}"
-}
-add-zsh-hook precmd _p_conda_info_f
-
 _p_cmdline_f ()
 {
     local PromptCharacterColor=$(_p_safe_color "$(_p_color 250)" "$(_p_color 7)")
@@ -343,6 +330,6 @@ TRAPINT ()
 
 _p_prompt ()
 {
-    print -P "${_p_userhostinfo}${_p_pwdinfo}${_p_gitinfo}${_p_conda_info}"
+    print -P "${_p_userhostinfo}${_p_pwdinfo}${_p_gitinfo}"
 }
 add-zsh-hook precmd _p_prompt
