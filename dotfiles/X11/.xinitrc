@@ -2,7 +2,7 @@
 
 [ -f $XDOTDIR/.xprofile ] && . $XDOTDIR/.xprofile
 
-xrandr --auto
+[ -x "$XDG_CONFIG_HOME/screenlayout/layout.sh" ] && "$XDG_CONFIG_HOME/screenlayout/layout.sh" || xrandr --auto
 
 # set keymap
 xset r rate 500 20
