@@ -2,7 +2,6 @@
 
 case "${1-}" in
     'pre')
-        chvt 63
         echo suspend > /proc/driver/nvidia/suspend
         ;;
     'post')
