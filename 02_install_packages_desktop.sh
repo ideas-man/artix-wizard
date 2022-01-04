@@ -36,7 +36,9 @@ install_official_packages pass
 install_official_packages alsa-utils
 install_official_packages pulseaudio pulseaudio-bluetooth pamixer
 
-install_official_packages neofetch htop iftop iotop powertop iptraf-ng
+install_official_packages acpilight dunst
+
+install_official_packages neofetch htop iftop iotop powertop iptraf-ng btop
 
 install_official_packages at at-runit
 install_official_packages cronie cronie-runit
@@ -48,7 +50,7 @@ install_official_packages sane sane-airscan
 
 install_official_packages rng-tools rng-tools-runit
 install_official_packages tlp tlp-runit 
-install_official_packages acpi acpid-runit
+install_official_packages acpi acpid acpid-runit
 install_official_packages openssh openssh-runit 
 install_official_packages chrony chrony-runit
 install_official_packages dhcpcd dhcpcd-runit

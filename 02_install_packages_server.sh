@@ -33,7 +33,7 @@ install_official_packages neovim
 install_official_packages tmux
 install_official_packages fzf
 
-install_official_packages neofetch htop iftop iotop powertop iptraf-ng
+install_official_packages neofetch htop iftop iotop powertop iptraf-ng btop
 
 install_official_packages at at-runit
 install_official_packages cronie cronie-runit
