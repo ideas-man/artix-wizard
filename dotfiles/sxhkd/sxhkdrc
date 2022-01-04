@@ -20,6 +20,14 @@ XF86AudioRaiseVolume
 XF86AudioLowerVolume
 	pamixer -d 5
 
+# screen backlight +5%
+XF86MonBrightnessUp
+	xbacklight -inc 5
+
+# screen backlight -5%
+XF86MonBrightnessDown
+	xbacklight -dec 5
+
 # passmenu
 XF86Tools
 	passmenu
@@ -28,13 +36,9 @@ XF86Tools
 Print
 	maim -s | xclip -selection clipboard -t image/png
 
-# screen backlight +5%
-XF86MonBrightnessUp
-	xbacklight -inc 5
-
-# screen backlight -5%
-XF86MonBrightnessDown
-	xbacklight -dec 5
+# lock screen
+super+l
+	slock
 
 # toggle bt
 XF86Bluetooth
