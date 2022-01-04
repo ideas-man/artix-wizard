@@ -28,6 +28,14 @@ XF86Tools
 Print
 	maim -s | xclip -selection clipboard -t image/png
 
+# screen backlight +5%
+XF86MonBrightnessUp
+	xbacklight -inc 5
+
+# screen backlight -5%
+XF86MonBrightnessDown
+	xbacklight -dec 5
+
 # toggle bt
 XF86Bluetooth
 	if [ $(connmanctl technologies | grep -A 3 "/net/connman/technology/bluetooth" | tail -1 | sed 's/\s*Powered =\s*//') = "False" ]; then 
@@ -35,3 +43,8 @@ XF86Bluetooth
 	else
     	connmanctl disable bluetooth
 	fi
+
+# make sxhkd reload its configuration files:
+super + Escape
+    pkill -USR1 -x sxhkd; \
+    notify-send -t 1000 'sxhkd' 'Reloaded!'
