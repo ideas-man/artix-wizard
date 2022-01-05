@@ -39,6 +39,7 @@ install_official_packages pulseaudio pulseaudio-bluetooth pamixer
 install_official_packages acpilight dunst
 install_official_packages cbatticon
 install_official_packages pasystray
+install_official_packages gxkb
 
 install_official_packages neofetch htop iftop iotop powertop iptraf-ng btop
 

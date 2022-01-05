@@ -41,58 +41,11 @@ sxhkd &
 
 while true
 do
-	#VOL="VOL:$(amixer get Master | tail -1 | sed 's/.*\[\([0-9]*%\)\].*/\1/')"
-	#SINK=$(pactl list short sinks | grep RUNNING | sed 's/\s.*//')
-	#VOL="VOL:$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')"
 	VOL="VOL:$(pamixer --get-volume)"
 	LOCALTIME="TIME:$(date +%d.%m.%Y'/'%H:%M)"
 	IP="IP:$(for i in `ip r`; do echo $i; done | grep -A 1 src | tail -n1)"
-	#TEMP="TEMP:$(($(cat /sys/class/thermal/thermal_zone0/temp) / 1000))C"
-	BAT="BAT:$(acpi -b | grep -o '[[:digit:]]*%' | tr '\n' '/' | head -c -1)"
 
-	PWIFI=$(connmanctl technologies | grep -A 3 "/net/connman/technology/wifi" | tail -1 | sed 's/\s*Powered =\s*//')
-	case $PWIFI in
-		True) WIFIPWR="ON";;
-		False) WIFIPWR="OFF";;
-	esac
-	CWIFI=$(connmanctl technologies | grep -A 4 "/net/connman/technology/wifi" | tail -1 | sed 's/\s*Connected =\s*//')
-	case $CWIFI in
-		True) WIFICON="V";;
-		False) WIFICON="X";;
-	esac
-	WIFI="WIFI:$WIFIPWR/$WIFICON"
-
-	PETH=$(connmanctl technologies | grep -A 3 "/net/connman/technology/ethernet" | tail -1 | sed 's/\s*Powered =\s*//')
-	case $PETH in
-		True) ETHPWR="ON";;
-		False) ETHPWR="OFF";;
-	esac
-	CETH=$(connmanctl technologies | grep -A 4 "/net/connman/technology/ethernet" | tail -1 | sed 's/\s*Connected =\s*//')
-	case $CETH in
-		True) ETHCON="V";;
-		False) ETHCON="X";;
-	esac
-	ETH="ETH:$ETHPWR/$ETHCON"
-
-	PBT=$(connmanctl technologies | grep -A 3 "/net/connman/technology/bluetooth" | tail -1 | sed 's/\s*Powered =\s*//')
-	case $PBT in
-		True) BTPWR="ON";;
-		False) BTPWR="OFF";;
-	esac
-	CBT=$(connmanctl technologies | grep -A 4 "/net/connman/technology/bluetooth" | tail -1 | sed 's/\s*Connected =\s*//')
-	case $CBT in
-		True) BTCON="V";;
-		False) BTCON="X";;
-	esac
-	BT="BT:$BTPWR/$BTCON"
-
-	SLANG=$(xset -q | grep LED | awk '{print $10}' | sed -E 's/....(.).../\1/')
-	case $SLANG in
-		0) LANG="LANG:EN";;
-		1) LANG="LANG:RU";;
-	esac
-
-	xsetroot -name "$BAT|$IP|$WIFI|$ETH|$BT|$VOL|$LANG|$LOCALTIME"
+	xsetroot -name "$IP | $VOL | $LOCALTIME"
 
 	sleep 1s
 done &
