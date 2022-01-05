@@ -11,3 +11,5 @@ alias fgrep='fgrep --color=auto '
 alias egrep='egrep --color=auto '
 
 alias x-start='startx "$XDOTDIR/.xinitrc" -- "$XDOTDIR/.xserverrc"'
+
+alias stb='tabbed -cd -r 2 st -w "id"'
