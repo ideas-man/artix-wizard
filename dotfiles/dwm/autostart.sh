@@ -1,5 +1,7 @@
 # bin/sh
 
+sleep 1
+
 IFS='
 '
 for line in $(cbatticon -p | grep "id: BAT")

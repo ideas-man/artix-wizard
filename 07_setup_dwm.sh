@@ -2,7 +2,7 @@
 
 . "./.wizard_utils.sh"
 
-print_header ">>> Configuring X server <<<"
+print_header ">>> Configuring dwm <<<"
 
 check_user
 
@@ -10,7 +10,7 @@ check_user
 
 print_subheader ">>> Creating symlinks... <<<"
 
-mkdir -p $XDG_DATA_HOME/dwn
-ln -sf $WIZARD_DOT/dwm/autostart.sh $XDG_DATA_HOME/autostart.sh:
+mkdir -p $XDG_DATA_HOME/dwm
+ln -sf $WIZARD_DOT/dwm/autostart.sh $XDG_DATA_HOME/dwm/autostart.sh:
 
 print_subheader ">>> Done! <<<"
