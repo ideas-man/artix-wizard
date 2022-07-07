@@ -4,6 +4,8 @@
 
 print_header ">>> Configuring zsh <<<"
 
+check_user
+
 ###############################################################################
 
 print_subheader ">>> Creating symlinks... <<<"
