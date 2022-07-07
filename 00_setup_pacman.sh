@@ -16,7 +16,7 @@ print_subheader ">>> Done! <<<"
 
 ###############################################################################
 
-print_subheader(">>> Enabling Arch repositories and adding gpg keys... <<<")
+print_subheader">>> Enabling Arch repositories and adding gpg keys... <<<"
 
 pacman -Sy artix-archlinux-support archlinux-keyring artix-keyring
 cat "$WIZARD_DOT/pacman/pacman.conf" | tee -a /etc/pacman.conf
