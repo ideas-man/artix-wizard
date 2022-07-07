@@ -12,10 +12,7 @@ install_official_packages xorg xorg-xinit
 
 print_subheader ">>> Remember to choose GPU drivers to install!"
 
-#install_official_packages xf86-video-amdgpu
-#install_official_packages xf86-video-intel
-#install_official_packages xf86-video-fbdev 
-#install_official_packages xf86-video-vesa
+install_official_packages mesa vulkan-radeon xf86-video-amdgpu
 
 install_official_packages sxhkd
 
@@ -33,9 +30,7 @@ install_official_packages zathura zathura-pdf-mupdf zathura-djvu zathura-ps
 
 install_official_packages ffmpeg ffmpegthumbnailer
 
-install_official_packages firefox firefox-extension-https-everywhere
-
-install_official_packages firefox-ublock-origin firefox-decentraleyes
+install_official_packages firefox
 
 install_official_packages telegram-desktop
 
@@ -44,5 +39,7 @@ install_official_packages simple-scan
 install_official_packages inkscape
 
 install_official_packages code
+
+install_official_packages arandr
 
 print_subheader ">>> Done! <<<"
