@@ -48,7 +48,17 @@ XF86Bluetooth
     	connmanctl disable bluetooth
 	fi
 
+# reset language configuration
+super+r+l
+	setxkbmap -layout "us,ru" -option "grp:win_space_toggle"; \
+	notify-send -t 1000 'setxkbmap' 'Reset!'
+
+# restart dunst
+super+r+d
+	killall dunst; \
+	notify-send -t 1000 'dunst' 'Restarted!'
+
 # make sxhkd reload its configuration files:
-super + Escape
+super+Escape
     pkill -USR1 -x sxhkd; \
     notify-send -t 1000 'sxhkd' 'Reloaded!'
