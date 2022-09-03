@@ -42,4 +42,6 @@ install_official_packages code
 
 install_official_packages arandr
 
+install_official_packages solaar
+
 print_subheader ">>> Done! <<<"

@@ -17,3 +17,5 @@ sleep 0.2
 pasystray &
 sleep 0.2
 gxkb &
+sleep 0.2
+solaar --window=hide &
