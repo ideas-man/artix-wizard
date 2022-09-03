@@ -10,9 +10,9 @@ check_user
 
 print_subheader ">>> Creating symlinks... <<<"
 
-mkdir -p $HOME/.local/share/gnupg
-ln -sf $WIZARD_DOT/gnupg/gpg-agent.conf $HOME/.local/share/gnupg/gpg-agent.conf
-ln -sf $WIZARD_DOT/gnupg/gpg.conf $HOME/.local/share/gnupg/gpg.conf
+mkdir -p $XDG_DATA_HOME/gnupg
+ln -sf $WIZARD_DOT/gnupg/gpg-agent.conf $XDG_DATA_HOME/gnupg/gpg-agent.conf
+ln -sf $WIZARD_DOT/gnupg/gpg.conf $XDG_DATA_HOME/gnupg/gpg.conf
 
 print_subheader ">>> Done! <<<"
 
@@ -20,8 +20,8 @@ print_subheader ">>> Done! <<<"
 
 print_subheader ">>> Setting permissions... <<<"
 
-chmod 700 $HOME/.local/share/gnupg/
-chmod 600 $HOME/.local/share/gnupg/gpg.conf
-chmod 600 $HOME/.local/share/gnupg/gpg-agent.conf
+chmod 700 $XDG_DATA_HOME/gnupg/
+chmod 600 $XDG_DATA_HOME/gnupg/gpg.conf
+chmod 600 $XDG_DATA_HOME/gnupg/gpg-agent.conf
 
 print_subheader ">>> Done! <<<"
