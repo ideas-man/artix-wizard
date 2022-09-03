@@ -20,6 +20,14 @@ XF86AudioRaiseVolume
 XF86AudioLowerVolume
 	pamixer -d 5
 
+# vol up
+button6
+	pamixer -i 1
+
+# vol down
+button7
+	pamixer -d 1
+
 # screen backlight +5%
 XF86MonBrightnessUp
 	xbacklight -inc 5
@@ -49,12 +57,12 @@ XF86Bluetooth
 	fi
 
 # reset language configuration
-super+r+l
+super+o
 	setxkbmap -layout "us,ru" -option "grp:win_space_toggle"; \
 	notify-send -t 1000 'setxkbmap' 'Reset!'
 
 # restart dunst
-super+r+d
+super+i
 	killall dunst; \
 	notify-send -t 1000 'dunst' 'Restarted!'
 
