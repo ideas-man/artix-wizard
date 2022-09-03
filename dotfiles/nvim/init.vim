@@ -51,47 +51,15 @@ set undofile
 
 call plug#begin($XDG_CACHE_HOME . '/nvim/plugged')
 
+" fuzzy search
 Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-capslock'
 
-" Appearance
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-"Plug 'itchyny/lightline.vim'
+" start page
 Plug 'mhinz/vim-startify'
-Plug 'raymond-w-ko/vim-niji'
-Plug 'Yggdroot/indentLine'
 
-" Handy unix command inside Vim (Rename, Move etc.)
-Plug 'tpope/vim-eunuch'
-
-" Git command inside vim
-Plug 'tpope/vim-fugitive'
-
-" Autocomplete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Python autocomplete (source for deoplete)
-" pip install pynvim
-" pip install jedi
-Plug 'zchee/deoplete-jedi'
-
-" Python completion, goto definition etc.
-Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-" Python indent (follows the PEP8 style)
-Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
-
-" Code auto-format
-" pip install yapf
-"Plug 'sbdchd/neoformat', { 'on': 'Neoformat' }
-" pip install autopep8
-Plug 'Chiel92/vim-autoformat'
-
-" Linting
-" pip install flake8
+" syntax highlight
 Plug 'dense-analysis/ale'
-
-" Yank highlight
-Plug 'machakann/vim-highlightedyank'
+Plug 'nvim-treesitter/nvim-treesitter'
 
 call plug#end()
 
@@ -108,73 +76,12 @@ let g:airline_left_sep  = ''
 let g:airline_right_sep = ''
 let g:airline#extensions#ale#enabled = 1
 
-" ###################### indentLine ######################
-
-let g:indentLine_char = '·'
-let g:indentLine_color_gui = '#888888'
-
-set grepprg=rg\ --vimgrep\ --smart-case\ --follow
-
-" ###################### vim-lightline ######################
-
-"function! LanguageStatus(...) abort
-"    return &iminsert == 1 ? (a:0 == 1 ? a:1 : 'RU') : ''
-"endfunction
-
-"function! CapsLockStatus(...) abort
-"    return CapsLockStatusline('CAPS')
-"endfunction
-
-"let g:lightline = {
-"      \ 'colorscheme': 'powerline',
-"      \ 'active': {
-"      \   'left': [ [ 'mode', 'lang', 'caps', 'paste' ],
-"      \             [ 'gitbranch', 'filename', 'readonly', 'modified' ] ]
-"      \ },
-"      \ 'component_function': {
-"      \   'lang': 'LanguageStatus',
-"      \   'caps': 'CapsLockStatus',
-"      \   'gitbranch': 'fugitive#head'
-"      \ },
-"      \ }
-
-" ###################### deoplete ######################
-let g:deoplete#enable_at_startup = 1
-" Candidate list item number limit
-call deoplete#custom#option('max_list', 30)
-
-" The number of processes used for the deoplete parallel feature.
-call deoplete#custom#option('num_processes', 16)
-
-" The delay for completion after input, measured in milliseconds.
-call deoplete#custom#option('auto_complete_delay', 1000)
-
-" Enable deoplete auto-completion
-call deoplete#custom#option('auto_complete', v:true)
-
-" ###################### deoplete-jedi settings ###################### 
-" Whether to show doc string
-let g:deoplete#sources#jedi#show_docstring = 0
-
-" For large package, set autocomplete wait time longer
-let g:deoplete#sources#jedi#server_timeout = 500
-
-" Ignore jedi errors during completion
-let g:deoplete#sources#jedi#ignore_errors = 1
-
 " ###################### yankhighlight ######################
 "reverse highlight
 hi HighlightedyankRegion cterm=reverse gui=reverse
 
 " set highlight for 1 second
 let g:highlightedyank_highlight_duration = 1000
-
-" ###################### jedi-vim settings ###################### 
-" Disable autocompletion, because I use deoplete for auto-completion
-let g:jedi#completions_enabled = 0
-
-" Whether to show function call signature
-let g:jedi#show_call_signatures = '0'
 
 " ###################### ale settings ######################
 " linters for different filetypes
@@ -200,16 +107,3 @@ let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
-" ###################### neoformat settings ######################
-"let g:neoformat_enabled_python = ['black', 'yapf']
-"let g:neoformat_cpp_clangformat = {
-"  \ 'exe': 'clang-format',
-"  \ 'args': ['--style="{IndentWidth: 4}"']
-"\}
-"let g:neoformat_c_clangformat = {
-"  \ 'exe': 'clang-format',
-"  \ 'args': ['--style="{IndentWidth: 4}"']
-"\}
-
-"let g:neoformat_enabled_cpp = ['clangformat']
-"let g:neoformat_enabled_c = ['clangformat']
