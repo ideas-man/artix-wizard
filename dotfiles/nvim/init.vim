@@ -57,6 +57,17 @@ Plug 'junegunn/fzf.vim'
 " start page
 Plug 'mhinz/vim-startify'
 
+" A Tree-like side bar for better navigation
+Plug 'scrooloose/nerdtree'
+
+" Better syntax-highlighting for filetypes in vim
+Plug 'sheerun/vim-polyglot'
+
+" Git integration
+Plug 'tpope/vim-fugitive'
+" Auto-close braces and scopes
+Plug 'jiangmiao/auto-pairs'
+
 " syntax highlight
 Plug 'dense-analysis/ale'
 Plug 'nvim-treesitter/nvim-treesitter'
@@ -68,31 +79,17 @@ filetype plugin indent on
 syntax on
 syntax enable
 
-" ###################### airline ######################
-let g:airline_theme='serene'
-
-" misc
-let g:airline_left_sep  = ''
-let g:airline_right_sep = ''
-let g:airline#extensions#ale#enabled = 1
-
-" ###################### yankhighlight ######################
-"reverse highlight
-hi HighlightedyankRegion cterm=reverse gui=reverse
-
-" set highlight for 1 second
-let g:highlightedyank_highlight_duration = 1000
-
 " ###################### ale settings ######################
 " linters for different filetypes
 let g:ale_linters = {
-  \ 'python': ['flake8'],
-  \ 'vim': ['vint'],
-  \ 'cpp': ['clang'],
-  \ 'c': ['clang']
+  \ 'python': ['pylint'],
+  \ 'vim': ['vint']
 \}
 
+let g:ale_fixers = {'python': ['isort', 'yapf', 'remove_trailing_lines', 'trim_whitespace']}
+
 let g:ale_enabled = 1
+let g:ale_completion_enabled = 1
 
 " Only run linters in the g:ale_linters dictionary
 let g:ale_linters_explicit = 1
